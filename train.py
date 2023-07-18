@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import sys
 
+from sklearn.metrics import mean_squared_error
+
 class PolynomialRegression:
     def __init__(self, degrees):
         self.degrees = degrees
@@ -40,33 +42,23 @@ class PolynomialRegression:
             self.gradients(X, x, y, y_pred, lr)
             # print(f"self.w and self.b are : {self.w, self.b}")
 
-            losses = loss( y, y_pred )
+            loss = mean_squared_error(y, y_pred) 
+
             if epoch % 10 == 0:
                 sys.stdout.write(
                     "\n" +
                     "I:" + str(epoch) +
-                    " Train-Err:" + str(losses / float(len(X)))[0:5] + 
+                    " Train-Err:" + str(loss / float(len(X)))[0:5] + 
                     # " Y_pred : " + str(y_pred[0:5]) +
                     # " Y_train : " + str(y_train[0:5]) +
                     "\n"
                 )
 
-            l = loss( y, y_pred )
-            losses.append(l)
+            losses.append(loss)
 
     def x_transform(self, X):
         t = X.copy()
         for i in self.degrees:
             X = np.append(X, t**i, axis=1)
         return X
-
-def r2_score_model(y, y_hat):
-
-    return 1 - (np.sum((np.array(y_hat)-np.array(y))**2)/
-                np.sum((np.array(y)-np.mean(np.array(y)))**2))
-
-def loss(y, y_hat):
-    #Calculating loss.
-    loss = np.mean((y_hat - y)**2)
-    return loss
 
