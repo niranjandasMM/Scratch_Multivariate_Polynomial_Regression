@@ -10,7 +10,7 @@ from data import x_train, x_test, y_train, y_test
 # y = 5 * (X[:, 0] ** 2 + X[:, 1] ** 2 + X[:, 2] ** 2) + np.random.rand(3)
 # y = y.reshape(-1, 1)
 
-degree = [2]
+degree = [2] ## if you need degree 3 then = [2,3], if 4 then = [2,3,4] and so on ....
 
 model = PolynomialRegression(degrees=degree)
 model.train(x_train, y_train, epochs=10, lr=0.0001)
@@ -18,14 +18,7 @@ model.train(x_train, y_train, epochs=10, lr=0.0001)
 # plt.plot(l, 'r-') ; plt.show()
 
 # # # # Plotting
-# fig = plt.figure(figsize=(8,6))
-# plt.plot(X, y, 'y.')
-# plt.plot(X, model.predict(X, w, b, degree), 'r.')
-# plt.legend(["Data", "Polynomial predictions"])
-# plt.xlabel('X - Input')
-# plt.ylabel('y - target / true')
-# plt.title('Polynomial Regression')
-# plt.show()
+## Plotting in Progress
 
 y_test_pred = model.predict(x_test, test=True)
 print( "r2 score model is : ",  r2_score_model(y_test, y_test_pred ) )
