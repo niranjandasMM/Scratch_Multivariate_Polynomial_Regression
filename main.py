@@ -1,15 +1,3 @@
-# Notations —
-# n →number of features
-# m →number of training examples
-# X →input data matrix of shape (m x n)
-# y →true/ target value vector of size m
-# x(i), y(i)→ith training example, where x(i) is n-dimensional and y(i) is a Real Number.
-# degrees →A list. We add X^(value) feature to the input where value is one of the values in the list. (explained in detail later)
-# w → weights (parameters) of shape (n x 1)
-# b →bias (parameter), a real number that can be broadcasted.
-# y_hat → hypothesis (dot product of w (weights) and X plus the b (bias)) — w.X + b
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 from train import PolynomialRegression
