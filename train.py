@@ -3,6 +3,7 @@ import pandas as pd
 import sys
 
 from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
 
 class PolynomialRegression:
     def __init__(self, degrees):
@@ -29,6 +30,7 @@ class PolynomialRegression:
             return np.dot(X, self.w) + self.b
 
     def train(self, X_train, y_train, epochs, lr):
+
         X_transformed = self.x_transform(X_train)
         m, n = X_transformed.shape  ## no. of samples, no. of features
 
@@ -45,30 +47,29 @@ class PolynomialRegression:
             loss = mean_squared_error(y_train, y_pred) 
             
             if epoch % 10 == 0:
+                # Initialize an empty list to store the data for the maximum difference
+                data = []
+
+                # Iterate over the predictions and actual values
+                for x, y in zip(y_pred, y_train):
+                    diff = abs(x - y)  # Calculate the absolute difference
+                    data.append({"y_predicted": x, "actual": y, "difference": diff})
+
+                # Create the DataFrame outside the loop
+                df = pd.DataFrame(data)
+                # print(df)
+                max_diff = df['difference'].max()
+                
                 sys.stdout.write(
                     "\n" +
                     "I:" + str(epoch) +
-                    " Train-Err:" + str(loss / float(len(X_train)))[0:5] + 
-                    # " Y_pred : " + str(y_pred[0:5]) +
-                    # " Y_train : " + str(y_train[0:5]) +
+                    " Train-Err:" + str(loss / float(len(X_train)))[0:5] +
+                    " MAX Difference: " + str(max_diff) +
                     "\n"
                 )
-
-            losses.append(loss)
-
-            # Initialize an empty list to store the data
-            data = []
-
-            # Iterate over the predictions and actual values
-            for x, y in zip(y_pred, y_train):
-                diff = abs(x - y)  # Calculate the absolute difference
-                data.append({"y_predicted": x, "actual": y, "difference": diff})
-
-            # Create the DataFrame outside the loop
-            df = pd.DataFrame(data)
-            # print(df)
-            print( "MAX Difference : ", df['difference'].max() )
-
+        print(f" training r2 score is : {r2_score(y_train, y_pred)}")
+        return y_pred
+    
     def x_transform(self, X):
         t = X.copy()
         for i in self.degrees:
